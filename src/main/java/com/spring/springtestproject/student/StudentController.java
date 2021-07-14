@@ -18,7 +18,7 @@ public class StudentController {
                 new Student(
                         1L,
                         "Marian",
-                        "lol.a@gmail.com",
+                        "lol.a@gmail.pl",
                         LocalDate.of(1999, Month.JUNE,3),
                         22
                 )
