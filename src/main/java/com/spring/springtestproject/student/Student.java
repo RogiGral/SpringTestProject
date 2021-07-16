@@ -1,30 +1,56 @@
 package com.spring.springtestproject.student;
 
-import java.time.LocalDate;
 
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
+
+@Entity
+@Table
 public class Student {
+
+    @Id
+    @GenericGenerator(name = "sequenceGenerator", strategy = "enhanced-sequence",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name = "optimizer",
+                            value = "pooled"),
+                    @org.hibernate.annotations.Parameter(
+                            name = "initial_value",
+                            value = "1"),
+                    @org.hibernate.annotations.Parameter(
+                            name = "increment_size",
+                            value = "1")
+            }
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "sequenceGenerator")
     private Long id;
     private String name;
     private String email;
     private LocalDate dob;
+    @Transient
     private Integer age;
 
     public Student() {
     }
 
-    public Student(Long id, String name, String email, LocalDate dob, Integer age) {
+    public Student(Long id, String name, String email, LocalDate dob) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
-    public Student(String name, String email, LocalDate dob, Integer age) {
+    public Student(String name, String email, LocalDate dob) {
         this.name = name;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
     public Long getId() {
@@ -60,7 +86,7 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {
